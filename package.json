@@ -5,9 +5,14 @@
   "repository": "git@github.com:TaharaKazuki/express.git",
   "author": "田原 一樹 <ssp0727.lnc@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node app.ts",
+    "dev": "ts-node-dev --respawn app.ts"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "ts-node": "^10.2.1",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   },
   "devDependencies": {
