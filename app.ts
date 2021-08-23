@@ -37,21 +37,15 @@ app.post('/api/v1/tours', (req, res) => {
   const newTours = {id: newTourId, ...req.body}
   tours.push(newTours)
     fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, safeStringify.stableStringify(tours), err => {
-    if(err) {
-      console.error(`errorが発生しました:${err}`)
-      throw err
-    } else {
-      res.status(201).json({
-        status: 'success',
-        data: {
-          tour: newTours
-        }
-      })
-    }
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTours
+      }
+    })
   })
   res.send('Done')  
 })
-
 
 const port = 3000
 
