@@ -5,7 +5,6 @@ import safeStringify from 'fast-safe-stringify'
 
 import toursJSON from './dev-data/data/tours-simple.json'
 
-
 type responseType = typeof toursJSON
 
 const app = express()
@@ -17,8 +16,6 @@ if (process.env.NODE_ENV == 'development') {
 
 app.use(express.json())
 app.use(express.static(`${__dirname}/public`))
-
-
 
 const tours: responseType = JSON.parse(
   `${fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)}`
@@ -34,16 +31,23 @@ app.get('/api/v1/tours', (_req, res) => {
 
 app.post('/api/v1/tours', (req, res) => {
   const newId = tours[tours.length - 1].id + 1
-  const newTours = Object.assign({id: newId}, req.body)
-  tours.push(newTours)
-  fs.writeFile(`${__dirname}/dev-dat/data/tours-simple.json`, safeStringify.stableStringify(tours), (error) => {
-    res.status(201).json({
-      status: 'success',
-      data: {
-        tour: newTours
+  const newTour = { id: newId, ...req.body }
+  tours.push(newTour)
+  fs.writeFile(
+    `${__dirname}/dev-dat/data/tours-simple.json`,
+    safeStringify.stableStringify(tours),
+    (err) => {
+      if (err) {
+        console.info('error', err)
       }
-    })  
-  })
+      res.status(201).json({
+        status: 'success',
+        data: {
+          tour: newTour,
+        },
+      })
+    }
+  )
 })
 
 const port = 3000
