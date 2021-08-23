@@ -33,18 +33,17 @@ app.get('/api/v1/tours', (_req, res) => {
 })
 
 app.post('/api/v1/tours', (req, res) => {
-  const newTourId = tours[tours.length - 1].id + 1
-  const newTours = {id: newTourId, ...req.body}
+  const newId = tours[tours.length - 1].id + 1
+  const newTours = Object.assign({id: newId}, req.body)
   tours.push(newTours)
-    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, safeStringify.stableStringify(tours), err => {
+  fs.writeFile(`${__dirname}/dev-dat/data/tours-simple.json`, safeStringify.stableStringify(tours), (error) => {
     res.status(201).json({
       status: 'success',
       data: {
         tour: newTours
       }
-    })
+    })  
   })
-  res.send('Done')  
 })
 
 const port = 3000
