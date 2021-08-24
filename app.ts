@@ -68,8 +68,24 @@ app.post('/api/v1/tours', (req, res) => {
   )
 })
 
-const port = 3000
+app.patch('/api/v1/tours/:id', (req, res) => {
+  if (+req.params.id > tours.length) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    })
+  }
 
-app.listen(port, () => {
-  console.info('app running')
+  res.status(200).json({
+    data: {
+      tour: '<Updata tour here ...>'
+    }
+  })
+})
+
+
+const PORT = 3000
+
+app.listen(PORT, () => {
+  console.info(`app running PORT:${PORT}`)
 })
