@@ -1,5 +1,5 @@
 import fs from 'fs'
-import express from 'express'
+import express, { Express, Request, Response } from 'express'
 import morgan from 'morgan'
 import safeStringify from 'fast-safe-stringify'
 
@@ -7,7 +7,7 @@ import toursJSON from './dev-data/data/tours-simple.json'
 
 type responseType = typeof toursJSON
 
-const app = express()
+const app: Express = express()
 
 // log middleware
 if (process.env.NODE_ENV == 'development') {
@@ -17,20 +17,19 @@ if (process.env.NODE_ENV == 'development') {
 app.use(express.json())
 app.use(express.static(`${__dirname}/public`))
 
-
 const tours: responseType = JSON.parse(
   `${fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)}`
 )
 
-app.get('/api/v1/tours', (_req, res) => {
+const getAllTours = (_req: Request, res: Response) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
     data: { tours },
   })
-})
+}
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req: Request, res: Response) => {
   const id = +req.params.id
   const tour = tours.find((el) => el.id === id)
 
@@ -46,9 +45,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
     status: 'success',
     data: { tour },
   })
-})
+}
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req: Request, res: Response) => {
   const newId = tours[tours.length - 1].id + 1
   const newTour = { id: newId, ...req.body }
   tours.push(newTour)
@@ -67,23 +66,38 @@ app.post('/api/v1/tours', (req, res) => {
       })
     }
   )
-})
-
-app.patch('/api/v1/tours/:id', (req, res) => {
+}
+const updateTour = (req: Request, res: Response) => {
   if (+req.params.id > tours.length) {
-    res.status(404).json({
+    return res.status(404).json({
       status: 'fail',
-      message: 'Invalid ID'
+      message: 'Invalid ID',
     })
   }
 
   res.status(200).json({
     data: {
-      tour: '<Updata tour here ...>'
-    }
+      tour: '<Updata tour here ...>',
+    },
   })
-})
+}
 
+const deleteTour = (req: Request, res: Response) => {
+  if (+req.params.id > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    })
+  }
+  res.status(200).json({
+    data: {
+      tour: '<Delete tour>',
+    },
+  })
+}
+
+app.route('/api/v1/tours').get(getAllTours).post(createTour)
+app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
 const PORT = 3000
 
