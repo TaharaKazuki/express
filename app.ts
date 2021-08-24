@@ -17,6 +17,7 @@ if (process.env.NODE_ENV == 'development') {
 app.use(express.json())
 app.use(express.static(`${__dirname}/public`))
 
+
 const tours: responseType = JSON.parse(
   `${fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)}`
 )
