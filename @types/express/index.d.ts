@@ -1,7 +1,8 @@
-declare global{
+import express from 'express'
+declare global {
   namespace Express {
-      interface Request {
-          requestTime: Date
-      }
+    interface Request {
+      requestTime: string
+    }
   }
 }
