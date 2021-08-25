@@ -1,5 +1,5 @@
 import fs from 'fs'
-import express, { Express, Request, Response } from 'express'
+import express, { Express, Request, Response, NextFunction } from 'express'
 import morgan from 'morgan'
 import safeStringify from 'fast-safe-stringify'
 
@@ -16,6 +16,10 @@ if (process.env.NODE_ENV == 'development') {
 
 app.use(express.json())
 app.use(express.static(`${__dirname}/public`))
+app.use((req: Request, _res:Response, next:NextFunction) => {
+  req.requestTime = new Date().toISOString()
+  next()
+})
 
 const tours: responseType = JSON.parse(
   `${fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)}`
