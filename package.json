@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@types/morgan": "^1.9.3",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "fast-safe-stringify": "^2.0.8",
     "morgan": "^1.10.0",
