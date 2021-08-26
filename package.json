@@ -1,13 +1,13 @@
 {
   "name": "express",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.ts",
   "repository": "git@github.com:TaharaKazuki/express.git",
   "author": "田原 一樹 <ssp0727.lnc@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node app.ts",
-    "dev": "ts-node-dev --respawn app.ts"
+    "start": "ts-node server.ts",
+    "dev": "ts-node-dev --respawn server.ts"
   },
   "dependencies": {
     "@types/morgan": "^1.9.3",
