@@ -1,8 +1,17 @@
-import express, { Router } from 'express'
-import tourController from './../controllers/tourController'
+import { Router } from 'express'
+import {
+  getAllTours,
+  getTour,
+  createTour,
+  updateTour,
+  deleteTour,
+  checkID,
+} from './../controllers/tourController'
 
 const router = Router()
 
-router.param('id', tourController.checkID)
+router.param('id', checkID)
+router.route('/').get(getAllTours).post(createTour)
+router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
-router.route('/').get
+export default router
