@@ -24,6 +24,20 @@ export const checkID = (
   next()
 }
 
+export const checkBody = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): ResponseStatusType => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price',
+    })
+  }
+  next()
+}
+
 export const getAllTours = (req: Request, res: Response): void => {
   res.status(200).json({
     status: 'success',
@@ -47,7 +61,7 @@ export const createTour = (req: Request, res: Response): void => {
   const newTour = { id: newId, ...req.body }
   tours.push(newTour)
   fs.writeFile(
-    `${__dirname}/dev-dat/data/tours-simple.json`,
+    `${__dirname}/../dev-dat/data/tours-simple.json`,
     safeStringify.stableStringify(tours),
     (err) => {
       if (err) {
